@@ -1,19 +1,17 @@
 package ru.breev;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        String str = "qwerty";
-        List<String> list = new ArrayList<String>();
-        list.add(str);
-        System.out.println( list );
+public class App {
+    final static Random random = new Random();
+    final static int CAPACITY = 1000000;
+
+    public static void main(String[] args) {
+        Array<Integer> array = new ArrayImpl<>(CAPACITY);
+        for (int i = 0; i < CAPACITY; i++) {
+            array.add(random.nextInt(10));
+        }
+
+        System.out.println(array.toString());
     }
 }
