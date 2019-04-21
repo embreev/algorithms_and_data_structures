@@ -1,19 +1,29 @@
 package ru.breev;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Time;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        String str = "qwerty";
-        List<String> list = new ArrayList<String>();
-        list.add(str);
-        System.out.println( list );
+public class App {
+    final static Random random = new Random();
+    final static int CAPACITY = 100000;
+
+    static Array<Integer> array;
+    static Array<Integer> tmpArray;
+
+    static float startTime;
+    static float stopTime;
+
+    public static void main(String[] args) {
+        array = new ArrayImpl<>(CAPACITY);
+        fillInt();
+        System.out.println(array);
+
+    }
+
+    private static void fillInt() {
+        for (int i = 0; i < CAPACITY; i++) {
+            array.add(random.nextInt(10));
+        }
     }
 }
