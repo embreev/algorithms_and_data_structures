@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 public class App {
     final static Random random = new Random();
-    final static int CAPACITY = 1000000;
+    final static int CAPACITY = 1_000_0;
 
     static Array<Integer> array;
     static Array<Integer> tmpArray;
@@ -24,19 +24,19 @@ public class App {
         startTime = System.nanoTime();
         tmpArray.sortBubble();
         stopTime = System.nanoTime();
-        System.out.println("Bubble: " + TimeUnit.NANOSECONDS.toSeconds((long) (stopTime - startTime)));
+        System.out.println("Bubble: " + TimeUnit.NANOSECONDS.toMillis((long) (stopTime - startTime)) + " ms");
 
         copyArray();
         startTime = System.nanoTime();
         tmpArray.sortSelect();
         stopTime = System.nanoTime();
-        System.out.println("Select: " + TimeUnit.NANOSECONDS.toSeconds((long) (stopTime - startTime)));
+        System.out.println("Select: " + TimeUnit.NANOSECONDS.toMillis((long) (stopTime - startTime)) + " ms");
 
         copyArray();
         startTime = System.nanoTime();
         tmpArray.sortInsert();
         stopTime = System.nanoTime();
-        System.out.println("Insert: " + TimeUnit.NANOSECONDS.toSeconds((long) (stopTime - startTime)));
+        System.out.println("Insert: " + TimeUnit.NANOSECONDS.toMillis((long) (stopTime - startTime)) + " ms");
 
         System.out.println(tmpArray);
     }
