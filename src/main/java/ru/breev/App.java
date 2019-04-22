@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 public class App {
     final static Random random = new Random();
-    final static int CAPACITY = 1_000_0;
+    final static int CAPACITY = 1_000_000;
 
     static Array<Integer> array;
     static Array<Integer> tmpArray;
