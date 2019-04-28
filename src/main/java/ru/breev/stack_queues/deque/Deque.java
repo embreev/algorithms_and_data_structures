@@ -4,8 +4,8 @@ import ru.breev.stack_queues.queue.Queue;
 
 public interface Deque<E> extends Queue<E> {
 
-    void insertLeft(E value);
-    void insertRight(E value);
+    void insertLeft(E element);
+    void insertRight(E element);
 
     E removeLeft();
     E removeRight();
