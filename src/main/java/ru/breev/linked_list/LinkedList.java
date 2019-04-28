@@ -1,10 +1,12 @@
 package ru.breev.linked_list;
 
-public interface LinkedList<E> {
+import java.util.Iterator;
+
+public interface LinkedList<E> extends Iterator {
 
     void insert(E value);
 
-    E remove();
+    E removeElement();
 
     boolean remove(E value);
 

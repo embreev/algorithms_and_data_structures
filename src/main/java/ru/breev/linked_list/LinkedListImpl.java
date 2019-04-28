@@ -1,6 +1,9 @@
 package ru.breev.linked_list;
 
-public class LinkedListImpl<E> implements LinkedList<E> {
+import java.util.Iterator;
+import java.util.function.Consumer;
+
+public class LinkedListImpl<E> implements LinkedList<E>, Iterable {
 
     protected Entry<E> firstElement;
     protected int size;
@@ -15,7 +18,7 @@ public class LinkedListImpl<E> implements LinkedList<E> {
     }
 
     @Override
-    public E remove() {
+    public E removeElement() {
         if ( isEmpty() ) {
             return null;
         }
@@ -104,5 +107,36 @@ public class LinkedListImpl<E> implements LinkedList<E> {
     @Override
     public Entry<E> getFirst() {
         return firstElement;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return this.getFirst().getNext() == null;
+    }
+
+    @Override
+    public Object next() {
+        return this.getFirst().getNext();
+    }
+
+    @Override
+    public void forEachRemaining(Consumer action) {
+        while (hasNext()) {
+            System.out.println(firstElement);
+            next();
+        }
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+
+    }
+
+    @Override
+    public void forEach(Consumer action) {
+        while (hasNext()) {
+            System.out.println(firstElement);
+            next();
+        }
     }
 }
