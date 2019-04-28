@@ -1,4 +1,4 @@
-package ru.breev;
+package ru.breev.array_list;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
