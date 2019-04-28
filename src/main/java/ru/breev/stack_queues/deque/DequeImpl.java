@@ -35,4 +35,13 @@ public class DequeImpl<E> extends QueueImpl<E> implements Deque<E> {
         queueSize--;
         return data[end--];
     }
+
+//    @Override
+//    public String toString() {
+//        StringBuilder sb = new StringBuilder();
+//        for (int i = 0; i < data.length; i++) {
+//            sb.append(data[i] + ", ");
+//        }
+//        return sb.toString();
+//    }
 }
