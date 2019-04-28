@@ -2,11 +2,11 @@ package ru.breev.stack_queues.queue;
 
 public class QueueImpl<E> implements Queue<E> {
 
-    E[] data;
-    int queueSize;
+    protected E[] data;
+    protected int queueSize;
 
-    int start;
-    int end;
+    protected int start;
+    protected int end;
 
     public QueueImpl(int queueSize) {
         this.data = (E[]) new Object[queueSize];

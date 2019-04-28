@@ -9,13 +9,17 @@ public class DequeImpl<E> extends QueueImpl<E> implements Deque<E> {
     }
 
     @Override
-    public void insertLeft(E value) {
-        if ()
+    public void insertLeft(E element) {
+        if (start - 1 < 0) {
+            start = data.length;
+        }
+        data[--start] = element;
+        queueSize++;
     }
 
     @Override
-    public void insertRight(E value) {
-        super.insert(value);
+    public void insertRight(E element) {
+        super.insert(element);
     }
 
     @Override
@@ -25,6 +29,10 @@ public class DequeImpl<E> extends QueueImpl<E> implements Deque<E> {
 
     @Override
     public E removeRight() {
-        return null;
+        if (end < 0) {
+            end = data.length - 1;
+        }
+        queueSize--;
+        return data[end--];
     }
 }
