@@ -19,6 +19,7 @@ public class App {
 
         System.out.println("сapacity = " + bp.getCapacity());
         bp.getItems();
+        System.out.println("price = " + bp.getPice());
     }
 
 }
