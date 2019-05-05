@@ -1,22 +1,17 @@
 package ru.breev.iterator;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 public class LinkIteratorApp {
 
+
     public static void main(String[] args) {
+        LinkedList list = new LinkedList();
 
-        List<Character> ll = new LinkedList<>();
-        ll.add('a');
-        ll.add('b');
-        ll.add('c');
-        ll.add('d');
+        LinkInterator itr = new LinkInterator(list);
 
-        Iterator iterator = ll.iterator();
-        while (iterator.hasNext()) {
-            System.out.print(iterator.next());
-        }
+        itr.insertAfter("Artem", 20);
+        itr.insertBefore("Sergey", 10);
+
+        list.display();
     }
+
 }
