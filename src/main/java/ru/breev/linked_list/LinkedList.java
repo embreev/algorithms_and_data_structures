@@ -2,7 +2,7 @@ package ru.breev.linked_list;
 
 import java.util.Iterator;
 
-public interface LinkedList<E> extends Iterator {
+public interface LinkedList<E>{
 
     void insert(E value);
 
