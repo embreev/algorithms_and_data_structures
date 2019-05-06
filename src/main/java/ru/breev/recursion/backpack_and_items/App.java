@@ -1,19 +1,38 @@
 package ru.breev.recursion.backpack_and_items;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class App {
 
-    static Backpack bp;
-    static List<Item> items;
+    private static Backpack bp;
+    private static List<Item> items;
+    private static int maxPrice = 0;
+    private static Item tmpItem;
+    private static Set<Backpack> result = new HashSet<Backpack>();
 
-    static int maxPrice(){
-        for (Item item: items) {
-            bp.addItem(item);
+    private static void shuffleItems(int length) {
+        if (length == 1) {
+            return;
         }
-        return bp.getPice();
+
+        for (int i = 0; i < length; i++) {
+            shuffleItems(length - 1);
+            result.add(bp);
+            rotate(length);
+        }
+    }
+
+    private static void rotate(int length) {
+        int pos = items.size() - length;
+        tmpItem = items.get(pos);
+        for (int i =  pos + 1; i < items.size(); i++) {
+            items.set(i - 1, items.get(i));
+        }
+        items.set(items.size() - 1, tmpItem);
+
     }
 
     public static void main(String[] args) {
@@ -27,10 +46,11 @@ public class App {
         items.add(new Item("pen", 1, 1));
         items.add(new Item("diary", 4, 10));
 
-        Collections.shuffle(items);
-        System.out.println(maxPrice());
-        bp.getItems();
+        shuffleItems(items.size());
+        System.out.println(bp);
 
     }
+
+
 
 }

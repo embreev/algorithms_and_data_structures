@@ -3,10 +3,10 @@ package ru.breev.recursion;
 public class Exponentiation {
 
     static int exp(int value, int degree) {
-        while (degree != 1) {
-            return value * exp(value, degree - 1);
+        if (degree == 1) {
+            return value;
         }
-        return value;
+        return value * exp(value, degree - 1);
     }
 
     public static void main(String[] args) {

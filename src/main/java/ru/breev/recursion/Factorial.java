@@ -3,10 +3,10 @@ package ru.breev.recursion;
 public class Factorial {
 
     static int fact(int value) {
-        while (value != 1) {
-            return value * fact(value - 1);
+        if (value == 1) {
+            return value;
         }
-        return value;
+        return value * fact(value - 1);
     }
 
     public static void main(String[] args) {

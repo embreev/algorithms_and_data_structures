@@ -14,12 +14,15 @@ public class Backpack {
         this.capacity = capacity;
     }
 
-    public void addItem(Item item) {
+    public boolean addItem(Item item) {
         if (item.weight <= capacity) {
             backpack.add(item);
             price = price + item.price;
             capacity = capacity - item.weight;
             count++;
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -35,9 +38,4 @@ public class Backpack {
         return price;
     }
 
-    public void getItems(){
-        for (Item item: backpack) {
-            System.out.println(item.name);;
-        }
-    }
 }
