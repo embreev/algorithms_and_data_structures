@@ -1,37 +1,53 @@
 package ru.breev.recursion.backpack_and_items;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class App {
 
     private static Backpack bp;
     private static List<Item> items;
+    private static List<Item> tmpItems;
+    private static List<Item> bestItems;
     private static int maxPrice = 0;
     private static Item tmpItem;
-    private static Set<Backpack> result = new HashSet<Backpack>();
 
     private static void shuffleItems(int length) {
-        if (length == 1) {
+        if (length == 0) {
             return;
         }
 
         for (int i = 0; i < length; i++) {
             shuffleItems(length - 1);
-            result.add(bp);
+            add();
+            if (bp.getPice() > maxPrice) {
+                maxPrice = bp.getPice();
+            }
             rotate(length);
         }
     }
 
-    private static void rotate(int length) {
-        int pos = items.size() - length;
-        tmpItem = items.get(pos);
-        for (int i =  pos + 1; i < items.size(); i++) {
-            items.set(i - 1, items.get(i));
+    private static void display() {
+        System.out.println(maxPrice);
+        for (Item item : bestItems) {
+            System.out.print(item.getName() + ", ");
         }
-        items.set(items.size() - 1, tmpItem);
+    }
+
+    private static void add() {
+        bestItems = new ArrayList<>(tmpItems);
+        for (int i = 0; i < bestItems.size(); i++) {
+            if (!bp.addItem(bestItems.get(i))) bestItems.remove(i);
+        }
+    }
+
+    private static void rotate(int length) {
+        int pos = tmpItems.size() - length;
+        tmpItem = items.get(pos);
+        for (int i =  pos + 1; i < tmpItems.size(); i++) {
+            tmpItems.set(i - 1, tmpItems.get(i));
+        }
+        tmpItems.set(items.size() - 1, tmpItem);
 
     }
 
@@ -46,8 +62,12 @@ public class App {
         items.add(new Item("pen", 1, 1));
         items.add(new Item("diary", 4, 10));
 
+        tmpItems = new ArrayList<>(items);
+
         shuffleItems(items.size());
-        System.out.println(bp);
+
+        display();
+
 
     }
 
