@@ -27,6 +27,6 @@ public class App {
         city.addEdge(city.getId("Саратов"), city.getId("Воронеж"));
         city.addEdge(city.getId("Курск"), city.getId("Воронеж"));
 
-        city.calcMinPath(city.getId("Москва"), city.getId("Воронеж"));
+        city.calcMinPath(city.getId("Тамбов"), city.getId("Москва"));
     }
 }
