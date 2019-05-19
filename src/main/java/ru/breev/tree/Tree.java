@@ -2,13 +2,6 @@ package ru.breev.tree;
 
 public interface Tree<E extends Comparable<? super E>> {
 
-    enum TraverseMode {
-        IN_ORDER,
-        PRE_ORDER,
-        POST_ORDER,
-    }
-
-
     boolean add(E value);
 
     boolean remove(E value);
@@ -18,8 +11,6 @@ public interface Tree<E extends Comparable<? super E>> {
     boolean isEmpty();
 
     void display();
-
-    void traverse(TraverseMode traverseMode);
 
     boolean isBalanced();
 

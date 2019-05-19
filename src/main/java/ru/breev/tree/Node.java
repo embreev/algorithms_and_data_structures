@@ -5,12 +5,10 @@ import java.util.Objects;
 public class Node<T extends Comparable<? super T>> {
 
     private final T value;
-
-    private Node<T> leftChild;
-    private Node<T> rightChild;
-
     private int level;
 
+    protected Node leftChild;
+    protected Node rightChild;
 
     public Node(T value) {
         this.value = value;
@@ -20,39 +18,20 @@ public class Node<T extends Comparable<? super T>> {
         return value;
     }
 
-    public Node<T> getLeftChild() {
-        return leftChild;
-    }
-
-    public void setLeftChild(Node<T> leftChild) {
-        this.leftChild = leftChild;
-    }
-
-    public Node<T> getRightChild() {
-        return rightChild;
-    }
-
-    public void setRightChild(Node<T> rightChild) {
-        this.rightChild = rightChild;
-    }
-
-    public boolean shouldBeLeft(T anotherValue) {
-        if (anotherValue == null) {
-            throw new IllegalArgumentException("Not null value is required");
-        }
-        return anotherValue.compareTo(value) < 0;
-    }
-
-    public boolean isLeaf() {
-        return leftChild == null && rightChild == null;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public int getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public Node getLeftChild() {
+        return leftChild;
+    }
+
+    public Node getRightChild() {
+        return rightChild;
     }
 
     @Override

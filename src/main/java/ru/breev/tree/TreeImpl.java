@@ -5,158 +5,148 @@ import java.util.Stack;
 public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
 
     private Node<E> root;
-
     private int maxLevel;
-
-    public TreeImpl() {
-        this(0);
-    }
 
     public TreeImpl(int maxLevel) {
         this.maxLevel = maxLevel;
     }
 
-
     @Override
     public boolean add(E value) {
+
+        Node node = new Node<>(value);
+
         if (isEmpty()) {
-            root = new Node<>(value);
+            root = node;
             return true;
-        }
-        NodeAndPrevious nodeAndPrevious = doFind(value);
-        Node<E> previous = nodeAndPrevious.previous;
-
-        if (nodeAndPrevious.current != null) {
-            return false;//Found duplicate
-        }
-
-        int level = previous.getLevel() + 1;
-        if (level > maxLevel) {
-            return false;
-        }
-
-        if (previous.shouldBeLeft(value)) {
-            previous.setLeftChild(new Node<>(value));
         } else {
-            previous.setRightChild(new Node<>(value));
-        }
+            Node<E> current = root;
+            Node<E> previous = root;
 
-        return true;
+//            if (current != null) {
+//                return false;//Found duplicate
+//            }
+
+            int level = previous.getLevel() + 1;
+            if (level > maxLevel) {
+                return false;
+            }
+
+            while (true) {
+                previous = current;
+                if (value.compareTo(current.getValue()) < 0) {
+                    current = current.leftChild;
+                    if (current == null) {
+                        previous.leftChild = node;
+                        return true;
+                    }
+                } else {
+                    current = current.rightChild;
+                    if (current == null) {
+                        previous.rightChild = node;
+                        return true;
+                    }
+                }
+            }
+        }
+//        return false;
     }
 
     @Override
     public boolean remove(E value) {
-        NodeAndPrevious nodeAndPrevious = doFind(value);
-        Node<E> removedNode = nodeAndPrevious.current;
-        Node<E> parent = nodeAndPrevious.previous;
 
-        if (removedNode == null) {
-            return false;
+        Node<E> current = root;
+        Node<E> previous = root;
+
+        boolean isLeftChild = true;
+
+        while (value != current.getValue()) {
+            previous = current;
+
+            if (value.compareTo(current.getValue()) < 0) {
+                isLeftChild = true;
+                current = current.leftChild;
+            } else {
+                isLeftChild = false;
+                current = current.rightChild;
+            }
         }
 
-        if (removedNode.isLeaf()) {
-            removeLeaf(removedNode, parent);
-        } else if (hasOnlySingleChildNode(removedNode)) {
-            removeNodeWithSingleChild(removedNode, parent);
+        if (current.leftChild == null && current.rightChild == null) {
+            if (current == root) {
+                root = null;
+            } else if (isLeftChild) {
+                previous.leftChild = null;
+            } else {
+                previous.rightChild = null;
+            }
+        } else if (current.rightChild == null) {
+            if (current == null) {
+                root = current.leftChild;
+            } else if (isLeftChild) {
+                previous.leftChild = current.leftChild;
+            } else {
+                previous.rightChild = current.rightChild;
+            }
+        } else if (current.leftChild == null) {
+            if (current == null) {
+                root = current.rightChild;
+            } else if (isLeftChild) {
+                previous.rightChild = current.rightChild;
+            } else {
+                previous.leftChild = current.leftChild;
+            }
         } else {
-            removeCommonNode(removedNode, parent);
+            Node successor = getSuccesor(current);
+            if (current == root){
+                root = successor;
+            }else if(isLeftChild){
+                previous.leftChild = successor;
+            }else {
+                previous.rightChild = successor;
+            }
+            successor.leftChild = current.leftChild;
         }
-
         return false;
     }
 
-    private void removeCommonNode(Node<E> removedNode, Node<E> parent) {
-        Node<E> successor = getSuccessor(removedNode);
-        if (removedNode == root) {
-            root = successor;
-        } else if (parent.getLeftChild() == removedNode) {
-            parent.setLeftChild(successor);
-        } else {
-            parent.setRightChild(successor);
-        }
-        successor.setLeftChild(removedNode.getLeftChild());
-    }
-
-    private void removeNodeWithSingleChild(Node<E> removedNode, Node<E> parent) {
-        Node<E> childNode = removedNode.getLeftChild() != null
-                ? removedNode.getLeftChild()
-                : removedNode.getRightChild();
-
-
-        if (removedNode == root) {
-            root = childNode;
-        } else if (parent.getLeftChild() == removedNode) {
-            parent.setLeftChild(childNode);
-        } else {
-            parent.setRightChild(childNode);
-        }
-    }
-
-    private void removeLeaf(Node<E> removedNode, Node<E> parent) {
-        if (removedNode == root) {
-            root = null;
-        } else if (parent.getLeftChild() == removedNode) {
-            parent.setLeftChild(null);
-        } else {
-            parent.setRightChild(null);
-        }
-    }
-
-    private Node<E> getSuccessor(Node<E> removedNode) {
-        Node<E> successor = removedNode;
-        Node<E> successorParent = null;
-        Node<E> current = removedNode.getRightChild();
+    public Node getSuccesor(Node node){
+        Node<E> successorParent = node;
+        Node<E> successor = node;
+        Node<E> current = node.rightChild;
 
         while (current != null) {
             successorParent = successor;
             successor = current;
-            current = current.getLeftChild();
+            current = current.leftChild;
         }
-
-        if (successor != removedNode.getRightChild()) {
-            successorParent.setLeftChild(successor.getRightChild());
-            successor.setRightChild(removedNode.getRightChild());
+        if (successor != node.rightChild){
+            successorParent.leftChild = successor.rightChild;
+            successor.rightChild = node.rightChild;
         }
 
         return successor;
-
     }
 
-    private boolean hasOnlySingleChildNode(Node<E> currentNode) {
-        return currentNode.getLeftChild() != null ^ currentNode.getRightChild() != null;
-    }
 
     @Override
     public boolean find(E value) {
-        NodeAndPrevious nodeAndPrevious = doFind(value);
-        return nodeAndPrevious.current != null;
-    }
-
-    private NodeAndPrevious doFind(E value) {
-        Node<E> previous = null;
         Node<E> current = root;
 
-        current.setLevel(1);
-
         while (current != null) {
-            if (previous != null) {
-                current.setLevel(previous.getLevel() + 1);
+            if (value == current.getValue()) {
+                break;
             }
-
-            if (current.getValue().equals(value)) {
-                return new NodeAndPrevious(current, previous);
-            }
-
-            previous = current;
-            if (current.shouldBeLeft(value)) {
-                current = current.getLeftChild();
+            if (value.compareTo(current.getValue()) < 0) {
+                current = current.leftChild;
             } else {
-                current = current.getRightChild();
+                current = current.rightChild;
             }
         }
-
-        return new NodeAndPrevious(null, previous);
-
+        if (current == null) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -171,7 +161,6 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
         int nBlanks = 64;
 
         boolean isRowEmpty = false;
-        System.out.println("................................................................");
 
         while (!isRowEmpty) {
             Stack<Node> localStack = new Stack<>();
@@ -191,7 +180,7 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
                         isRowEmpty = false;
                     }
                 } else {
-                    System.out.print("--");
+                    System.out.print("_");
                     localStack.push(null);
                     localStack.push(null);
                 }
@@ -208,51 +197,6 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
 
             nBlanks /= 2;
         }
-        System.out.println("................................................................");
-    }
-
-    @Override
-    public void traverse(TraverseMode traverseMode) {
-        switch (traverseMode) {
-            case IN_ORDER:
-                inOrder(root);
-                break;
-            case PRE_ORDER:
-                preOrder(root);
-                break;
-            case POST_ORDER:
-                postOrder(root);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown traverse mode " + traverseMode);
-        }
-    }
-
-    private void postOrder(Node<E> node) {
-        if (node == null) {
-            return;
-        }
-        inOrder(node.getLeftChild());
-        inOrder(node.getRightChild());
-        System.out.println(node);
-    }
-
-    private void preOrder(Node<E> node) {
-        if (node == null) {
-            return;
-        }
-        System.out.println(node);
-        inOrder(node.getLeftChild());
-        inOrder(node.getRightChild());
-    }
-
-    private void inOrder(Node<E> node) {
-        if (node == null) {
-            return;
-        }
-        inOrder(node.getLeftChild());
-        System.out.println(node);
-        inOrder(node.getRightChild());
     }
 
     @Override
@@ -269,15 +213,5 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
 
     private int height(Node node) {
         return node == null ? 0 : 1 + Math.max(height(node.getLeftChild()), height(node.getRightChild()));
-    }
-
-    class NodeAndPrevious {
-        Node<E> current;
-        Node<E> previous;
-
-        public NodeAndPrevious(Node<E> current, Node<E> previous) {
-            this.current = current;
-            this.previous = previous;
-        }
     }
 }
