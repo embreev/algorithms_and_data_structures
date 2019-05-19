@@ -29,8 +29,10 @@ public class App {
 
 //        city.displayAllVertex();
 
-        city.dfs();
-        System.out.println("==========");
-        city.bfs();
+//        city.dfs();
+//        System.out.println("==========");
+//        city.bfs();
+
+        city.calcMinPath(city.getId("Тамбов"), city.getId("Воронеж"));
     }
 }

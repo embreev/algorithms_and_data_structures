@@ -56,19 +56,18 @@ public class Graph {
         System.out.println(vertexList[i].getLabel());
     }
 
-    private int getUnvisitedVertex(int ver){
+    private int getUnvisitedVertex(int ver) {
         for (int i = 0; i < size; i++) {
-            if(adjMat[ver][i] == 1 && vertexList[i].wasVisited == false){
+            if (adjMat[ver][i] == 1 && !vertexList[i].isWasVisited()) {
                 return i;
             }
         }
-
         return -1;
     }
 
     public void dfs() {
         stack = new Stack();
-        vertexList[0].wasVisited = true;
+        vertexList[0].setWasVisited(true);
         displayVertexById(0);
         stack.push(0);
         while (!stack.isEmpty()) {
@@ -76,7 +75,7 @@ public class Graph {
             if (v == -1) {
                 stack.pop();
             } else {
-                vertexList[v].wasVisited = true;
+                vertexList[v].setWasVisited(true);
                 displayVertexById(v);
                 stack.push(v);
             }
@@ -87,25 +86,63 @@ public class Graph {
     public void bfs() {
         queue = new Queue(MAX_VERTEX);
 
-        vertexList[0].wasVisited = true;
+        vertexList[0].setWasVisited(true);
 
         displayVertexById(0);
 
-        queue.insert(0); // Вставка в конец очереди
+        queue.insert(0);
         int v2;
         while (!queue.isEmpty()) {
             int v1 = (int) queue.remove();
             while ((v2 = getUnvisitedVertex(v1)) != -1) {
-                vertexList[v2].wasVisited = true; // Пометка
-                displayVertexById(v2); // Вывод
+                vertexList[v2].setWasVisited(true);
+                displayVertexById(v2);
                 queue.insert(v2);
             }
         }
+        resetToUnvisited();
     }
 
-    private void resetToUnvisited () {
+    private void resetToUnvisited() {
         for (int i = 0; i < MAX_VERTEX; i++) {
-            vertexList[i].wasVisited = false;
+            vertexList[i].setWasVisited(false);
+        }
+    }
+
+    protected void calcMinPath(int start, int end) {
+
+        Queue path = new Queue(MAX_VERTEX);
+
+        vertexList[start].setWasVisited(true);
+
+        path.insert(start);
+
+        int v2;
+
+        while (!path.isEmpty()) {
+            int v1 = (int) path.remove();
+            while ((v2 = getUnvisitedVertex(v1)) != -1) {
+                vertexList[v2].setWasVisited(true);
+                path.insert(v1);
+            }
+            if (v2 != -1) {
+                vertexList[v2].setPreviousVertex(v1);
+            }
+        }
+        resetToUnvisited();
+        displayPath(end);
+    }
+
+    private void displayPath(int end) {
+        Stack tmpStack = new Stack();
+        int tmpId = end;
+        while (vertexList[tmpId].getPreviousVertex() != -1) {
+            tmpStack.push(vertexList[tmpId].getLabel());
+            tmpId = vertexList[tmpId].getPreviousVertex();
+        }
+
+        while (!tmpStack.empty()) {
+            System.out.println(tmpStack.pop());
         }
     }
 
