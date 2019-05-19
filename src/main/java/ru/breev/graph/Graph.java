@@ -1,5 +1,7 @@
 package ru.breev.graph;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.Stack;
 
 public class Graph {
@@ -65,44 +67,6 @@ public class Graph {
         return -1;
     }
 
-    public void dfs() {
-        stack = new Stack();
-        vertexList[0].setWasVisited(true);
-        displayVertexById(0);
-        stack.push(0);
-        while (!stack.isEmpty()) {
-            int v = getUnvisitedVertex((Integer) stack.peek());
-            if (v == -1) {
-                stack.pop();
-            } else {
-                vertexList[v].setWasVisited(true);
-                displayVertexById(v);
-                stack.push(v);
-            }
-        }
-        resetToUnvisited();
-    }
-
-    public void bfs() {
-        queue = new Queue(MAX_VERTEX);
-
-        vertexList[0].setWasVisited(true);
-
-        displayVertexById(0);
-
-        queue.insert(0);
-        int v2;
-        while (!queue.isEmpty()) {
-            int v1 = (int) queue.remove();
-            while ((v2 = getUnvisitedVertex(v1)) != -1) {
-                vertexList[v2].setWasVisited(true);
-                displayVertexById(v2);
-                queue.insert(v2);
-            }
-        }
-        resetToUnvisited();
-    }
-
     private void resetToUnvisited() {
         for (int i = 0; i < MAX_VERTEX; i++) {
             vertexList[i].setWasVisited(false);
@@ -111,11 +75,12 @@ public class Graph {
 
     protected void calcMinPath(int start, int end) {
 
-        Queue path = new Queue(MAX_VERTEX);
+        Queue<Integer> path = new ArrayDeque<>();
 
         vertexList[start].setWasVisited(true);
+//        displayVertexById(start);
+        path.add(start);
 
-        path.insert(start);
         int v;
 
         while (!path.isEmpty()) {
@@ -124,7 +89,8 @@ public class Graph {
                 path.remove();
             }
             else {
-                path.insert(v);
+                path.add(v);
+//                displayVertexById(v);
                 vertexList[v].setWasVisited(true);
                 vertexList[v].setPreviousVertex(convertToInt(path.peek()));
                 if (v == end) {
@@ -135,7 +101,6 @@ public class Graph {
         }
         resetToUnvisited();
     }
-
 
     private int convertToInt(Object peek) {
         if (peek == null) {
@@ -151,60 +116,10 @@ public class Graph {
             tmpStack.push(vertexList[tmpId].getLabel());
             tmpId = vertexList[tmpId].getPreviousVertex();
         }
+        tmpStack.push(vertexList[tmpId].getLabel());
 
         while (!tmpStack.empty()) {
             System.out.println(tmpStack.pop());
-        }
-    }
-
-    class Queue<E> {
-
-        protected E[] data;
-        protected int queueSize;
-
-        protected int start;
-        protected int end;
-
-        public Queue(int queueSize) {
-            this.data = (E[]) new Object[queueSize];
-            start = 0;
-            end = -1;
-        }
-
-        public void insert(E element) {
-            if (!full()) {
-                if (end == data.length - 1) {
-                    end = -1;
-                }
-                data[++end] = element;
-                queueSize++;
-            }
-        }
-
-        public E remove() {
-            if (!isEmpty()) {
-                if (start == data.length) {
-                    start = 0;
-                }
-            }
-            queueSize--;
-            return data[start++];
-        }
-
-        public E peek() {
-            return (!isEmpty()) ? data[end] : null;
-        }
-
-        public boolean isEmpty() {
-            return queueSize == 0;
-        }
-
-        public boolean full() {
-            return data.length == queueSize;
-        }
-
-        public int size() {
-            return data.length;
         }
     }
 }
