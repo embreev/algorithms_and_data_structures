@@ -116,21 +116,32 @@ public class Graph {
         vertexList[start].setWasVisited(true);
 
         path.insert(start);
-
-        int v2;
+        int v;
 
         while (!path.isEmpty()) {
-            int v1 = (int) path.remove();
-            while ((v2 = getUnvisitedVertex(v1)) != -1) {
-                vertexList[v2].setWasVisited(true);
-                path.insert(v1);
+            v = getUnvisitedVertex(convertToInt(path.peek()));
+            if (v == -1) {
+                path.remove();
             }
-            if (v2 != -1) {
-                vertexList[v2].setPreviousVertex(v1);
+            else {
+                path.insert(v);
+                vertexList[v].setWasVisited(true);
+                vertexList[v].setPreviousVertex(convertToInt(path.peek()));
+                if (v == end) {
+                    displayPath(v);
+                    break;
+                }
             }
         }
         resetToUnvisited();
-        displayPath(end);
+    }
+
+
+    private int convertToInt(Object peek) {
+        if (peek == null) {
+            return -1;
+        }
+        return (int) peek;
     }
 
     private void displayPath(int end) {
