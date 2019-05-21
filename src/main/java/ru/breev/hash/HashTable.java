@@ -9,11 +9,11 @@ public class HashTable {
 
         private int data;
 
-        public Item(int data) {
+        Item(int data) {
             this.data = data;
         }
 
-        public int getData() {
+        int getData() {
             return data;
         }
     }
@@ -56,8 +56,10 @@ public class HashTable {
         }
     }
 
-    private void display() {
-
+    protected void display() {
+        for (int i = 0; i < hashArr.length; i++) {
+                System.out.println(hashArr[i]);
+        }
     }
 
 

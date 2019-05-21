@@ -6,14 +6,15 @@ public class App {
 
         HashTable ht = new HashTable(10);
 
-        ht.insert(new HashTable.Item(100));
-        ht.insert(new HashTable.Item(150));
-        ht.insert(new HashTable.Item(130));
-        ht.insert(new HashTable.Item(105));
-        ht.insert(new HashTable.Item(200));
-        ht.insert(new HashTable.Item(100));
-        ht.insert(new HashTable.Item(130));
-        ht.insert(new HashTable.Item(100));
+        ht.insert(new HashTable.Item(301));
+        ht.insert(new HashTable.Item(102));
+        ht.insert(new HashTable.Item(102));
+        ht.insert(new HashTable.Item(505));
+        ht.insert(new HashTable.Item(203));
+        ht.insert(new HashTable.Item(301));
+        ht.insert(new HashTable.Item(434));
+        ht.insert(new HashTable.Item(605));
 
+        ht.display();
     }
 }
