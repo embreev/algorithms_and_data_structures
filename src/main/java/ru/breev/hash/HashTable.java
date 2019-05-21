@@ -42,7 +42,7 @@ public class HashTable {
         if (hashArr[index] == null) {
             hashArr[index] = item;
             return true;
-        } else if (hashArr[index].getClass().getName().equals(ru.breev.hash.HashTable.Item)) {
+        } else if (hashArr[index] instanceof HashTable.Item) {
             list = new LinkedList();
             list.add(hashArr[index]);
             list.add(item);
